@@ -32,6 +32,7 @@ window.Vue = require('vue');
              companiesIndex: CompaniesIndex
          }
      },
+     {path: '/admin/companies', component: CompaniesIndex, name: 'indexCompany'},
      {path: '/admin/companies/create', component: CompaniesCreate, name: 'createCompany'},
      {path: '/admin/companies/edit/:id', component: CompaniesEdit, name: 'editCompany'},
  ]

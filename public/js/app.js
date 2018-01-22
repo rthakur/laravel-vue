@@ -1118,7 +1118,7 @@ var routes = [{
     components: {
         companiesIndex: __WEBPACK_IMPORTED_MODULE_1__components_companies_CompaniesIndex_vue___default.a
     }
-}, { path: '/admin/companies/create', component: __WEBPACK_IMPORTED_MODULE_2__components_companies_CompaniesCreate_vue___default.a, name: 'createCompany' }, { path: '/admin/companies/edit/:id', component: __WEBPACK_IMPORTED_MODULE_3__components_companies_CompaniesEdit_vue___default.a, name: 'editCompany' }];
+}, { path: '/admin/companies', component: __WEBPACK_IMPORTED_MODULE_1__components_companies_CompaniesIndex_vue___default.a, name: 'indexCompany' }, { path: '/admin/companies/create', component: __WEBPACK_IMPORTED_MODULE_2__components_companies_CompaniesCreate_vue___default.a, name: 'createCompany' }, { path: '/admin/companies/edit/:id', component: __WEBPACK_IMPORTED_MODULE_3__components_companies_CompaniesEdit_vue___default.a, name: 'editCompany' }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({ routes: routes });
 
@@ -45632,6 +45632,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -45672,26 +45675,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
+    _c("div", { staticClass: "ibox float-e-margins" }, [
+      _c("div", { staticClass: "ibox-title" }, [
+        _c("h5", [_vm._v("Manage Companies")]),
+        _vm._v(" "),
         _c(
-          "router-link",
-          {
-            staticClass: "btn btn-success",
-            attrs: { to: { name: "createCompany" } }
-          },
-          [_vm._v("Create new company")]
+          "div",
+          { staticClass: "ibox-tools" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-success btn-xs",
+                attrs: { to: { name: "createCompany" } }
+              },
+              [_c("i", { staticClass: "fa fa-plus" }), _vm._v(" Create")]
+            )
+          ],
+          1
         )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel panel-default" }, [
-      _c("div", { staticClass: "panel-heading" }, [_vm._v("Companies list")]),
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
+      _c("div", { staticClass: "ibox-content" }, [
         _c("table", { staticClass: "table table-bordered table-striped" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -45713,7 +45718,7 @@ var render = function() {
                     _c(
                       "router-link",
                       {
-                        staticClass: "btn btn-xs btn-default",
+                        staticClass: "btn btn-xs btn-primary",
                         attrs: {
                           to: {
                             name: "editCompany",
@@ -45721,11 +45726,7 @@ var render = function() {
                           }
                         }
                       },
-                      [
-                        _vm._v(
-                          "\n                            Edit\n                        "
-                        )
-                      ]
+                      [_c("i", { staticClass: "fa fa-edit" })]
                     ),
                     _vm._v(" "),
                     _c(
@@ -45739,11 +45740,7 @@ var render = function() {
                           }
                         }
                       },
-                      [
-                        _vm._v(
-                          "\n                            Delete\n                        "
-                        )
-                      ]
+                      [_c("i", { staticClass: "fa fa-trash" })]
                     )
                   ],
                   1
@@ -45883,6 +45880,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -45892,19 +45899,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 address: '',
                 website: '',
                 email: ''
-            }
+            },
+            errors: []
         };
     },
     methods: {
         saveForm: function saveForm() {
+            var _this = this;
+
             event.preventDefault();
             var app = this;
             var newCompany = app.company;
             axios.post('/api/v1/companies', newCompany).then(function (resp) {
                 app.$router.push({ path: '/' });
-            }).catch(function (resp) {
-                console.log(resp);
-                alert("Could not create your company");
+            }).catch(function (error) {
+                _this.errors = [];
+                if (error.response.data.errors.name) {
+                    _this.errors.push(error.response.data.errors.name[0]);
+                }
+
+                if (error.response.data.errors.address) {
+                    _this.errors.push(error.response.data.errors.address[0]);
+                }
+
+                if (error.response.data.errors.email) {
+                    _this.errors.push(error.response.data.errors.email[0]);
+                }
+
+                if (error.response.data.errors.website) {
+                    _this.errors.push(error.response.data.errors.website[0]);
+                }
             });
         }
     }
@@ -45919,25 +45943,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
+    _c("div", { staticClass: "ibox float-e-margins" }, [
+      _c("div", { staticClass: "ibox-title" }, [
+        _c("h5", [_vm._v("Create Company")]),
+        _vm._v(" "),
         _c(
-          "router-link",
-          { staticClass: "btn btn-default", attrs: { to: "/" } },
-          [_vm._v("Back")]
+          "div",
+          { staticClass: "ibox-tools" },
+          [
+            _c(
+              "router-link",
+              { staticClass: "btn btn-primary btn-xs", attrs: { to: "/" } },
+              [_vm._v("Back")]
+            )
+          ],
+          1
         )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel panel-default" }, [
-      _c("div", { staticClass: "panel-heading" }, [
-        _vm._v("Create new company")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
+      _c("div", { staticClass: "ibox-content" }, [
+        _vm.errors.length > 0
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _c(
+                "ul",
+                _vm._l(_vm.errors, function(error) {
+                  return _c("li", [_vm._v(_vm._s(error))])
+                })
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "form",
           {
@@ -46194,6 +46229,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -46215,19 +46259,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 address: '',
                 website: '',
                 email: ''
-            }
+            },
+            errors: []
         };
     },
     methods: {
         saveForm: function saveForm() {
+            var _this = this;
+
             event.preventDefault();
             var app = this;
             var newCompany = app.company;
             axios.patch('/api/v1/companies/' + app.companyId, newCompany).then(function (resp) {
                 app.$router.replace('/');
-            }).catch(function (resp) {
-                console.log(resp);
-                alert("Could not create your company");
+            }).catch(function (error) {
+                _this.errors = [];
+                if (error.response.data.errors.name) {
+                    _this.errors.push(error.response.data.errors.name[0]);
+                }
+
+                if (error.response.data.errors.address) {
+                    _this.errors.push(error.response.data.errors.address[0]);
+                }
+
+                if (error.response.data.errors.email) {
+                    _this.errors.push(error.response.data.errors.email[0]);
+                }
+
+                if (error.response.data.errors.website) {
+                    _this.errors.push(error.response.data.errors.website[0]);
+                }
             });
         }
     }
@@ -46242,25 +46303,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
+    _c("div", { staticClass: "ibox float-e-margins" }, [
+      _c("div", { staticClass: "ibox-title" }, [
+        _c("h5", [_vm._v("Update Company")]),
+        _vm._v(" "),
         _c(
-          "router-link",
-          { staticClass: "btn btn-default", attrs: { to: "/" } },
-          [_vm._v("Back")]
+          "div",
+          { staticClass: "ibox-tools" },
+          [
+            _c(
+              "router-link",
+              { staticClass: "btn btn-default btn-xs", attrs: { to: "/" } },
+              [_vm._v("Back")]
+            )
+          ],
+          1
         )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel panel-default" }, [
-      _c("div", { staticClass: "panel-heading" }, [
-        _vm._v("Create new company")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
+      _c("div", { staticClass: "ibox-content" }, [
+        _vm.errors.length > 0
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _c(
+                "ul",
+                _vm._l(_vm.errors, function(error) {
+                  return _c("li", [_vm._v(_vm._s(error))])
+                })
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "form",
           {
@@ -46405,7 +46477,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-xs-12 form-group" }, [
-        _c("button", { staticClass: "btn btn-success" }, [_vm._v("Create")])
+        _c("button", { staticClass: "btn btn-success" }, [_vm._v("Update")])
       ])
     ])
   }

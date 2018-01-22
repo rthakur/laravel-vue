@@ -20,6 +20,13 @@ class CompaniesController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name'        => 'required|max:255',
+            'address' => 'required',
+            'website' => 'required',
+            'email' => 'required|email|unique:companies,email,'.$id,
+        ]);
+
         $company = Company::findOrFail($id);
         $company->update($request->all());
 
@@ -28,6 +35,13 @@ class CompaniesController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name'        => 'required|max:255',
+            'address' => 'required',
+            'website' => 'required',
+            'email' => 'required|email|unique:companies',
+        ]);
+
         $company = Company::create($request->all());
         return $company;
     }

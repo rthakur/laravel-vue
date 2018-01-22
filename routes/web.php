@@ -21,4 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/user', 'UserController');
 
-Route::get('/admin/companies', 'HomeController@companies');
+Route::get('/companies', 'HomeController@companies');

@@ -1,45 +1,54 @@
 <template>
     <div>
-        <div class="form-group">
-            <router-link to="/" class="btn btn-default">Back</router-link>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Create new company</div>
-            <div class="panel-body">
-                <form v-on:submit="saveForm()">
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label class="control-label">Company name</label>
-                            <input type="text" v-model="company.name" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label class="control-label">Company address</label>
-                            <input type="text" v-model="company.address" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label class="control-label">Company website</label>
-                            <input type="text" v-model="company.website" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label class="control-label">Company email</label>
-                            <input type="text" v-model="company.email" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <button class="btn btn-success">Create</button>
-                        </div>
-                    </div>
-                </form>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Update Company</h5>
+            <div class="ibox-tools">
+                <router-link to="/" class="btn btn-default btn-xs">Back</router-link>
             </div>
         </div>
+        <div class="ibox-content">
+            <div class="alert alert-danger" v-if="errors.length > 0">
+                <ul>
+                    <li v-for="error in errors">{{ error }}</li>
+                </ul>
+            </div>
+
+            <form v-on:submit="saveForm()">
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label class="control-label">Company name</label>
+                        <input type="text" v-model="company.name" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label class="control-label">Company address</label>
+                        <input type="text" v-model="company.address" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label class="control-label">Company website</label>
+                        <input type="text" v-model="company.website" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <label class="control-label">Company email</label>
+                        <input type="text" v-model="company.email" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 form-group">
+                        <button class="btn btn-success">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     </div>
 </template>
 
@@ -65,7 +74,8 @@
                     address: '',
                     website: '',
                     email: '',
-                }
+                },
+                errors: [],
             }
         },
         methods: {
@@ -77,9 +87,23 @@
                     .then(function (resp) {
                         app.$router.replace('/');
                     })
-                    .catch(function (resp) {
-                        console.log(resp);
-                        alert("Could not create your company");
+                    .catch(error => {
+                          this.errors = [];
+                        if (error.response.data.errors.name) {
+                            this.errors.push(error.response.data.errors.name[0]);
+                        }
+
+                        if (error.response.data.errors.address) {
+                            this.errors.push(error.response.data.errors.address[0]);
+                        }
+
+                        if (error.response.data.errors.email) {
+                            this.errors.push(error.response.data.errors.email[0]);
+                        }
+
+                        if (error.response.data.errors.website) {
+                            this.errors.push(error.response.data.errors.website[0]);
+                        }
                     });
             }
         }
